@@ -1,5 +1,28 @@
 <?php
+//Encontrar directorio
 
+
+
+function validateDate($date, $format = 'Y-m-d')
+{
+    $d = DateTime::createFromFormat($format, $date);
+    return $d && $d->format($format) === $date;
+}
+
+
+
+function findFile($controllerName, $baseDir) {
+    $iterator = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($baseDir, RecursiveDirectoryIterator::SKIP_DOTS)
+    );
+    
+    foreach ($iterator as $file) {
+        if ($file->isFile() && $file->getFilename() === $controllerName . ".php") {
+            return $file->getPathname();
+        }
+    }
+    return false;
+}
 //verificar contra
 
 function verificarCS($contraseña) {
@@ -25,9 +48,6 @@ function verificarCS($contraseña) {
 function encriptarContraseña($contraseña) {
     return password_hash($contraseña, PASSWORD_DEFAULT);
 }
-
-
-
 
 function rol($rol){
     $rolesPermitidos = ['aprendiz', 'instru', 'admin'];
@@ -114,7 +134,7 @@ function t_EPA($EPA){
             return false;
         }
     }
-function testEntero($numero){
+function testEntero(int $numero){
     $re = '/[0-9]+$/m';
     if(preg_match($re,$numero)){
         return true;

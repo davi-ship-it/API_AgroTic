@@ -4,7 +4,8 @@
     $paths = [
         'Libraries/Core/',
         'Models/',
-        'Controllers/'
+        'Controllers',
+
     ];
     
     // Busca en cada carpeta

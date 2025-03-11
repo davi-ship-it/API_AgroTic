@@ -8,7 +8,7 @@
     //Datos de conexión a Base de Datos
 	const CONNECTION = true;
 	const DB_HOST = "localhost";
-	const DB_NAME = "new_db_agro_2.0";
+	const DB_NAME = "db_agro_5.0";
 	const DB_USER = "root";
 	const DB_PASSWORD = "";
 	const DB_CHARSET = "utf8";

@@ -12,7 +12,7 @@
 			$this->conexion = $this->conexion->connect();
 		}
 
-        //Insertar un registro
+        //Insertar un registro 
 		public function insert(string $query, array $arrValues)
 		{
             try {
@@ -27,7 +27,7 @@
                     "id"     => $idInsert
                 ];
             } catch (Exception $e) {
-                echo "wenas1";
+                
                 return [  
                     "status" => false,
                     "msg"    => "Error1: " . $e->getMessage()
@@ -36,19 +36,28 @@
         }
 
         //Devuelve todos los registros
-		public function select_all(string $query)
-		{
-            try {
-                $this->strquery = $query;
-                $execute = $this->conexion->query($this->strquery);
-                $request = $execute->fetchall(PDO::FETCH_ASSOC); //ARRAY
-                $execute->closeCursor();
-                return $request;
-            } catch (Exception $e) {
-                $response = "Error: ". $e->getMessage();
-                return $response;
-            }
+		public function select_all(string $query, array $params = [])
+{
+    try {
+        $this->strquery = $query;
+        
+        if (!empty($params)) {
+            $stmt = $this->conexion->prepare($this->strquery);
+            $stmt->execute($params);
+            $request = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt->closeCursor();
+        } else {
+            $execute = $this->conexion->query($this->strquery);
+            $request = $execute->fetchAll(PDO::FETCH_ASSOC);
+            $execute->closeCursor();
         }
+        
+        return $request;
+    } catch (Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+}
+
 
         //Busca un registro
 		public function select(string $query, array $arrValues)
@@ -100,8 +109,24 @@
                 return $response;
             }
         }
+
+        // Incluir estos métodos en tu clase Mysql
+
+public function beginTransaction() {
+    return $this->conexion->beginTransaction();
+}
+
+public function commitTransaction() {
+    return $this->conexion->commit();
+}
+
+public function rollbackTransaction() {
+    return $this->conexion->rollBack();
+}
+
     }
 
+    
 ?>
 
 
